@@ -140,7 +140,7 @@ const TEMPLATE_OTP = (otp, userName) => {
         
             <div class="mythological-quote">"In the realm of creativity, every individual is a hero of their own epic." - Inspired by Homer's Odyssey</div>
         
-            <p>Your gateway awaits. Please use the following sacred token to verify your passage:</p>
+            <p>Your gateway awaits. Please use the following sacred token to verify your account:</p>
         
             <div class="otp">${otp}</div>
         
