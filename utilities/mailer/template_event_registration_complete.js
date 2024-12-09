@@ -92,8 +92,8 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                 <div class="sub-header">Event Registration Confirmation</div>
                 <img
                   class="hero-image"
-                  src="registration_hero.jpg"
-                  alt="Fresco of Virgin Mary"
+                  src="./pragati-icon.png"
+                  alt="pragati-icon"
                 />
                 <div class="details">
                   <p>Dear <strong> ${userName},</strong></p>
