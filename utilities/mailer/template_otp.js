@@ -136,7 +136,7 @@ const TEMPLATE_OTP = (otp, userName) => {
         
             <p>Greetings, <strong>${userName}</strong>,</p>
         
-            <p>As Hermes, the messenger of the gods, once guided travelers, we invite you to embark on an extraordinary journey through Pragati 2025 - where knowledge meets mythology, and innovation dances with ancient wisdom.</p>
+            <p>As Hermes, the messenger of the gods, once guided travelers, invites you to embark on an extraordinary journey through Pragati 2025 - where ancient wisdom meets modern innovation.</p>
         
             <div class="mythological-quote">"In the realm of creativity, every individual is a hero of their own epic." - Inspired by Homer's Odyssey</div>
         
