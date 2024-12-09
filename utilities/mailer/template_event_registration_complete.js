@@ -72,6 +72,17 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                 p {
                   font-size: 1.25rem;
                 }
+                strong {
+                  font-size: 1.2em;
+                  font-weight: bold;
+                  color: #8e6e53; 
+                  background: linear-gradient(to right, #f0d4a0, #c2a67d); 
+                  padding: 5px 10px;
+                  border-radius: 5px;
+                  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+               }
               </style>
             </head>
 
@@ -85,7 +96,7 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                   alt="Fresco of Virgin Mary"
                 />
                 <div class="details">
-                  <p><strong>Dear ${userName},</strong></p>
+                  <p>Dear <strong> ${userName},</strong></p>
                   <p>
                     You have successfully registered for the event:
                     <strong>${eventName}</strong>.
