@@ -132,7 +132,7 @@ const TEMPLATE_OTP = (otp, userName) => {
         <div class="header">Pragati 2025</div>
             <div class="sub-header">Voyage Through the Neo-Renaissance: A Mythological Odyssey</div>
         
-            <img class="hero-image" src="Images/Hero.webp" alt="An artistic interpretation of a mythological scene" />
+            <img class="hero-image" src="5a_hermes.webp" alt="An artistic interpretation of a mythological scene" />
         
             <p>Greetings, <strong>${userName}</strong>,</p>
         
