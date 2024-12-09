@@ -44,12 +44,12 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                   font-style: italic;
                 }
                 .hero-image {
-                  width: 100%;
-                  height: 325px;
+                  width: 45%;
+                  height: 250px;
                   border-radius: 10px;
                   margin-bottom: 20px;
                   object-fit: cover;
-                  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+                  box-shadow: 0 6px 15px #d7c2a1;
                 }
                 .details {
                   font-family: "Garamond", serif;
@@ -75,26 +75,22 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                 strong {
                   font-size: 1.2em;
                   font-weight: bold;
-                  color: #8e6e53; 
-                  background: linear-gradient(to right, #f0d4a0, #c2a67d); 
+                  color: #8e6e53;
+                  background: linear-gradient(to right, #f0d4a0, #c2a67d);
                   padding: 5px 10px;
                   border-radius: 5px;
-                  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
+                  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
                   text-transform: uppercase;
                   letter-spacing: 1px;
-               }
+                }
               </style>
             </head>
-
+          
             <body>
               <div class="container">
                 <div class="header">Pragati 2025</div>
                 <div class="sub-header">Event Registration Confirmation</div>
-                <img
-                  class="hero-image"
-                  src="./pragati-icon.png"
-                  alt="pragati-icon"
-                />
+                <img class="hero-image" src="./pragati-icon.png" alt="pragati-icon" />
                 <div class="details">
                   <p>Dear <strong> ${userName},</strong></p>
                   <p>
@@ -111,6 +107,7 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
               </div>
             </body>
           </html>
+
 `;
 };
 
