@@ -4,10 +4,10 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
             <head>
               <meta charset="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <title>Pragati 2025 | Event Registration Confirmation</title>
+              <title>Pragati 2025</title>
               <style>
                 body {
-                  font-family: "renfrew", serif;
+                  font-family: "Times New Roman", serif;
                   margin: 0;
                   padding: 0;
                   background: linear-gradient(135deg, #faf5e6, #e6dec8);
@@ -81,7 +81,7 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName,   eventName,   transactionId,
                 <div class="sub-header">Event Registration Confirmation</div>
                 <img
                   class="hero-image"
-                  src="https://media.istockphoto.com/id/1077210030/photo/parma-the-fresco-of-coronation-of-virgin-mary-in-main-apse-of-church-chiesa-di-san-giovanni.jpg?s=612x612&w=0&k=20&c=zEIFGuZGnpJhhSBDqw2yOzES_Fm_GZ1FBZReBiwmj2U="
+                  src="registration_hero.jpg"
                   alt="Fresco of Virgin Mary"
                 />
                 <div class="details">
