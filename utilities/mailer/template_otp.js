@@ -4,7 +4,7 @@ const TEMPLATE_OTP = (otp, userName) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pragati 2025 | Mythological Odyssey Registration</title>
+    <title>Pragati 2025</title>
     <style>
         * {
             margin: 0;
@@ -140,7 +140,7 @@ const TEMPLATE_OTP = (otp, userName) => {
         
             <div class="mythological-quote">"In the realm of creativity, every individual is a hero of their own epic." - Inspired by Homer's Odyssey</div>
         
-            <p>Your gateway awaits. Please use the following sacred token to verify your passage:</p>
+            <p>Your gateway awaits. Please use the following sacred token to verify your account:</p>
         
             <div class="otp">${otp}</div>
         
