@@ -104,6 +104,30 @@ const authController = {
   },
 
   /*
+    Request Header: Bearer OTP Token
+    Verify User Request Body
+    {
+      "otp": "string"
+    }
+  */
+  verifyUser: async (req, res) => {
+    const { otp, userID } = req.body;
+    if(!validateOTP(otp)){
+      const response = setResponseBadRequest("Invalid OTP");
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+
+    try {
+      const response = await authModule.verifyUser(userID, otp);
+      return res.status(response.responseCode).json(response.responseBody);
+    } catch (error) {
+      logError(error, "authController : Account Verification", "db");
+      const response = setResponseInternalError();
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+  },
+
+  /*
     Forgot Password request body
     {
         "userEmail": "string"
@@ -127,6 +151,7 @@ const authController = {
   },
 
   /*
+    Request Header: Bearer OTP Token
     {
       "otp": "string",
       "userPassword": "string"
@@ -146,7 +171,7 @@ const authController = {
     }
 
     try {
-      const response = await authModule.resetPassword(otp, userID, userPassword);
+      const response = await authModule.resetPassword(userID, otp, userPassword);
       return res.status(response.responseCode).json(response.responseBody);
     } catch (error) {
       logError(error, "authController : Reset Password", "db");

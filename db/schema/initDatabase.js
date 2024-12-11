@@ -1,10 +1,8 @@
 import { readFile } from 'fs';
 import { appConfig } from '../../config/config.js';
-
-import poolConnectToDb from '../poolConnection.js';
+import { pragatiDb, transactionsDb } from '../poolConnection.js';
 
 const initDatabase = async (dbName) => {
-    const [pragatiDb, transactionsDb] = poolConnectToDb();
     if (dbName == appConfig.db.pragati.database) {
         const db_conn = await pragatiDb.promise().getConnection();
         try {

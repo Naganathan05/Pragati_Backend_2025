@@ -17,6 +17,13 @@ const isUserExistsByEmail = async function (email,db) {
   }
 };
 
+
+/*
+  Response Codes:
+  responseCode = 401 -> User Not Found || Account Blocked by Admin,
+  responseCode = 403 -> User not Verified,
+  responseCode = 200 -> User Exists and Account is Active.
+*/
 const checkValidUser = async function(userEmail, db, category, userID){
   const response = {
     responseCode: 200,
@@ -39,7 +46,7 @@ const checkValidUser = async function(userEmail, db, category, userID){
       response.responseBody = "Account Blocked by Admin !";
       return response;
     } else if(userData[0].accountStatus === '1'){
-      response.responseCode = 401;
+      response.responseCode = 403;
       response.responseBody = "Account Not Verified";
       return response;
     }

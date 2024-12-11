@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import poolConnectToDb from "../db/poolConnection.js";
 import {
   setResponseOk,
   setResponseBadRequest,
@@ -8,14 +7,15 @@ import {
   setResponseTimedOut
 } from "../utilities/response.js";
 import { logError } from "../utilities/errorLogger.js";
+import { createToken } from "../middleware/tokenGenerator.js";
+import { validateOTP } from "../utilities/OTP/validateOTP.js";
 import { generateOTP } from "../utilities/OTP/otpGenerator.js";
 import { isUserExistsByEmail, checkValidUser } from "../utilities/dbUtilities.js";
-import { createToken } from "../middleware/tokenGenerator.js";
 import { sendForgotPasswordOtp, sendRegistrationOTP } from "../utilities/mailer/mailer.js"
+import { pragatiDb } from "../db/poolConnection.js";
 
 const authModule = {
   login: async function (email, password) {
-    const [pragatiDb, _] = poolConnectToDb();
     const db = await pragatiDb.promise().getConnection();
     try {
       // returns details of user if exists, else null
@@ -62,7 +62,6 @@ const authModule = {
       isAmrita,
     } = userData;
 
-    const [pragatiDb, _] = poolConnectToDb();
     const db = await pragatiDb.promise().getConnection();
 
     try {
@@ -143,13 +142,74 @@ const authModule = {
     }
   },
 
+  verifyUser: async function (userID, OTP) {
+    const db = await pragatiDb.promise().getConnection();
+    try {
+      var transactionStarted = 0;
+      const response = await checkValidUser(null, db, "userID", userID);
+      if(response.responseCode === 401){
+        return setResponseBadRequest(response.responseBody);
+      }
+
+      /*
+      Started a transaction to ensure atomical writes to otpTable and userData Table.
+      If any one of the write resulted in error, DB will be rolled back to the start of transaction
+      which avoids any partial change to the DB.
+      */
+       
+      await db.beginTransaction();
+      await db.query("LOCK TABLES otpTable WRITE;");
+
+      // Denotes that server entered the Transaction -> Needs Rollback incase of error.
+      transactionStarted = 1;
+      
+      // Utility function validateOTP called for validating the OTP entered by the User.
+      const validateOTPResponse = await validateOTP(userID, OTP, db);
+
+      // validateOTP has catched a internal server error in its execution.
+      if(validateOTPResponse.responseCode === 500){
+        // No need to check for the flag "transactionStarted", since it will be definitely started in this step of execution.
+        await db.rollback();
+        
+        console.log("[ERROR]: Error in Verify Account Module", validateOTPResponse.responseBody.DATA);
+        logError(validateOTPResponse.responseBody.DATA, "authModule:Verify Account", "db");
+        return setResponseInternalError();
+      }
+
+      // validateOTP has resulted in invalid OTP or expired OTP.
+      if(validateOTPResponse.responseCode !== 200) {
+        return validateOTPResponse;
+      }
+
+      // Updated the accountStatus field to ['2' - Active] for the user.
+      await db.query("LOCK TABLES userData WRITE;");
+      await db.query("UPDATE userData SET accountStatus = ? WHERE userID = ?",
+        ['2', userID]
+      );
+      return setResponseOk("Account Verified Succussfully");
+    } catch (error) {
+
+      // Transaction  Rolledback only if there is error and the server has entered the Transaction.
+      if(transactionStarted === 1){
+        await db.rollback();
+      }
+      
+      console.log("[ERROR]: Error in Verify Account Module", error);
+      logError(err, "authModule:Verify Account", "db");
+      return setResponseInternalError();
+
+    } finally {
+      await db.query("UNLOCK TABLES");
+      db.release();
+    }
+  },
+
   forgotPassword: async function (userEmail) {
-    const [pragatiDb, _] = poolConnectToDb();
     const db = await pragatiDb.promise().getConnection();
     try {
       var transactionStarted = 0;
       const response = await checkValidUser(userEmail, db, "userEmail", null);
-      if(response.responseCode === 401){
+      if(response.responseCode !== 200){
         return setResponseBadRequest(response.responseBody);
       }
 
@@ -203,19 +263,19 @@ const authModule = {
       console.log("[ERROR]: Error in Forgot Password Module: ", error);
       logError(err, "authModule:Forgot Password", "db");
       return setResponseInternalError();
+
     } finally {
       await db.query("UNLOCK TABLES");
       db.release();
     }
   },
 
-  resetPassword: async function (OTP, userID, newPassword) {
-    const [pragatiDb, _] = poolConnectToDb();
+  resetPassword: async function (userID, OTP, newPassword) {
     const db = await pragatiDb.promise().getConnection();
     try {
       var transactionStarted = 0;
       const response = await checkValidUser(null, db, "userID", userID);
-      if(response.responseCode === 401){
+      if(response.responseCode !== 200){
         return setResponseBadRequest(response.responseBody);
       }
 
@@ -226,39 +286,36 @@ const authModule = {
       */
        
       await db.beginTransaction();
-      await db.query("LOCK TABLES userData WRITE, otpTable WRITE;");
+      await db.query("LOCK TABLES otpTable WRITE;");
 
       // Denotes that server entered the Transaction -> Needs Rollback incase of error.
       transactionStarted = 1;
       
-      // Fetch the record for the user with the given OTP values.
-      const [otpRecord] = await db.query(`
-        SELECT * FROM otpTable 
-        WHERE userID = ? AND otp = ?`, 
-        [userID, OTP]
-      );
+      // Utility function validateOTP called for validating the OTP entered by the User.
+      const validateOTPResponse = await validateOTP(userID, OTP, db);
 
-      if (otpRecord.length === 0) {
-        return setResponseBadRequest("Invalid OTP");
-      } else {
-        // Record found, check expiry time.
-        const isExpired = await db.query(`
-          DELETE FROM otpTable 
-          WHERE userID = ? AND otp = ? AND expiryTime > NOW()`, 
-          [userID, OTP]
-        );
-
-        if (isExpired[0].affectedRows === 0) {
-          return setResponseTimedOut("OTP Expired. Retry !");
-        } 
+      // validateOTP has catched a internal server error in its execution.
+      if(validateOTPResponse.responseCode === 500){
+        // No need to check for the flag "transactionStarted", since it will be definitely started in this step of execution.
+        await db.rollback();
+        
+        console.log("[ERROR]: Error in Reset Password Module", validateOTPResponse.responseBody.DATA);
+        logError(validateOTPResponse.responseBody.DATA, "authModule:Reset Password", "db");
+        return setResponseInternalError();
       }
 
+      // validateOTP has resulted in either invalid OTP or expired OTP.
+      if(validateOTPResponse.responseCode != 200) {
+        return validateOTPResponse;
+      }
 
       // Updated the password field to new value for the user.
+      await db.query("LOCK TABLES userData WRITE;");
       await db.query("UPDATE userData SET userPassword = ? WHERE userID = ?",
         [newPassword, userID]
       );
       return setResponseOk("Password Reset Succussful");
+  
     } catch (error) {
 
       // Transaction  Rolledback only if there is error and the server has entered the Transaction.
@@ -269,6 +326,7 @@ const authModule = {
       console.log("[ERROR]: Error in Reset Password Module", error);
       logError(err, "authModule:Reset Password", "db");
       return setResponseInternalError();
+
     } finally {
       await db.query("UNLOCK TABLES");
       db.release();

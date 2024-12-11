@@ -11,5 +11,6 @@ authRouter.post("/signup", authController.signup);
 
 // OTP Token Validator added as Middleware.
 authRouter.post("/resetPassword", otpTokenValidator, authController.resetPassword);
+authRouter.post("/verifyUser", otpTokenValidator, authController.verifyUser);
 
 export default authRouter;

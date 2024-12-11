@@ -104,9 +104,11 @@ const validateSignupData = (data) => {
 
   // Validate isAmrita if provided
   if (
-    typeof data.isAmrita != "Boolean" ||
+    data.isAmrita === null || typeof data.isAmrita != "boolean" ||
     (data.isAmrita != false && data.isAmrita != true)
-  )
+  ){
+    return "Invalid isAmrita Value";
+  }
     return null;
 };
 
