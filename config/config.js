@@ -45,4 +45,6 @@ export const appConfig = {
         },
         name: 'Pragati 2025'
     },
+
+    // TODO: Should List the Config Needed for PayU.
 }

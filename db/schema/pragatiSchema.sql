@@ -79,6 +79,9 @@ insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `college
 insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2022, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '1111111111', 1, 'CB.EN.U4CSE22240', 'CSE', 'naganathan1555@gmail.com', 2, 'Naganathan', 'Naga2025');
 insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2022, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '5045678555', 1, 'CB.EN.U4AIE220', 'AIE', 'sarandharshanpushparaj@gmail.com',3, 'Saran', 'Saran2025');
 insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2022, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '7894561235', 1, 'CB.EN.U4CSE21008', 'CSE', 'ashrockzzz2003@gmail.com', 4, 'Ashwin', 'Ashrockz');
+insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2023, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '2525252525', 1, 'CB.SC.U4CSE23240', 'CSE', 'saran.hiruthik83@gmail.com', 5, 'Saran Hiruthik', 'SaranHiru2025');
+insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2023, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '5252525252', 1, 'CB.SC.U4CSE23220', 'CSE', 'kavinesh.p123@gmail.com',6, 'Kavinesh', 'Kavi2025');
+insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `collegeName`, `degree`, `isAmrita`, `needAccommodationDay1`, `needAccommodationDay2`, `needAccommodationDay3`, `phoneNumber`, `roleID`, `rollNumber`, `userDepartment`, `userEmail`, `userID`, `userName`, `userPassword`) values (2023, '2', 'Coimbatore', 'Amrita', 'B.Tech', 1, 0, 0, NULL, '1515151515', 1, 'CB.SC.U4CSE23008', 'CSE', 'akshayks1005@gmail.com', 7, 'Akshay', 'Akshay2025');
 
 -- table for temporary otp storage (Engine:in-memory storage) -----------------------------------------
 
@@ -113,6 +116,9 @@ CREATE TABLE IF NOT EXISTS `eventData` (
   `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `eventData` 
+(`eventName`, `imageUrl`, `eventFee`, `eventDescription`, `isGroup`, `maxTeamSize`, `minTeamSize`, `eventDate`, `eventStatus`, `maxRegistrations`, `isPerHeadFee`, `godName`) 
+VALUES ("sampleEvent", "URL", 1000, "This is a Sample Event", TRUE, 4, 1, '1', '1', 5, FALSE, "Zeus");
 
 -- table for registration details ------------------------------------------------------------------
 
@@ -146,11 +152,13 @@ CREATE TABLE IF NOT EXISTS `registrationData` (
 CREATE TABLE IF NOT EXISTS `groupDetail` (
   `registrationID` INT NOT NULL,
   `userID` INT NOT NULL,
+  `eventID` INT NOT NULL,
   `roleDescription` VARCHAR(255) DEFAULT NULL,
   `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
   PRIMARY KEY (`registrationID`, `userID`),
   CONSTRAINT FOREIGN KEY (`userID`) REFERENCES `userData` (`userID`) ON DELETE CASCADE,
+  CONSTRAINT FOREIGN KEY (`eventID`) REFERENCES `eventData` (`eventID`),
   CONSTRAINT FOREIGN KEY (`registrationID`) REFERENCES `registrationData` (`registrationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
