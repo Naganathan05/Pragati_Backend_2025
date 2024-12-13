@@ -109,6 +109,10 @@ const checkEventExistence = async function (eventID, totalMembers, db) {
     if(!(eventExists[0].eventStatus === '1')) {
       return setResponseBadRequest("Registration Currently Closed for this Event !");
     }
+
+    if(eventExists[0].isGroup === 0 && totalMembers > 1){
+      return setResponseBadRequest("Received more than One User to Register for a Non Group Event !");
+    }
     
     if(eventExists[0].minTeamSize > totalMembers || eventExists[0].maxTeamSize < totalMembers){
       return setResponseBadRequest("Invalid Team Size !");
@@ -124,8 +128,6 @@ const checkEventExistence = async function (eventID, totalMembers, db) {
   } catch (error) {
     console.error("[ERROR]: Error in checkEventExistence Utility: ", error);
     throw new Error("Database Query Failed.");
-  } finally {
-    db.release();
   }
 };
 
@@ -147,8 +149,6 @@ const checkDuplicateTransaction = async function (txnID, transactionDB) {
   } catch (error) {
     console.log("[ERROR]: Error in checkDuplicateTransaction Module", error);
     throw new Error("Database Query Failed");
-  } finally {
-    transactionDB.release();
   }
 }
 

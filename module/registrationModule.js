@@ -20,7 +20,7 @@ const registrationModule = {
             // Check the Existence and Account Status of the User.
             const userCheckResponse = await checkValidUser(null, db, "userID", userID);
             if(userCheckResponse.responseCode !== 200){
-            return setResponseBadRequest(userCheckResponse.responseBody);
+                return setResponseBadRequest(userCheckResponse.responseBody);
             }
 
             const userData = userCheckResponse.responseData;
@@ -234,7 +234,7 @@ const registrationModule = {
                 // Checking if any of the Team Member has already Registered for the Event as "TEAM MEMBER".
                 const [eventRegistrationGroupCheck] = await db.query(
                     "SELECT * FROM groupDetail WHERE eventID = ? AND userID IN (?)",
-                    [eventID, userID]
+                    [eventID, userIDs]
                 );
 
                 if(eventRegistrationGroupCheck.length > 0) {

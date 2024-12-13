@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `eventData` (
 
 INSERT INTO `eventData` 
 (`eventName`, `imageUrl`, `eventFee`, `eventDescription`, `isGroup`, `maxTeamSize`, `minTeamSize`, `eventDate`, `eventStatus`, `maxRegistrations`, `isPerHeadFee`, `godName`) 
-VALUES ("sampleEvent", "URL", 1000, "This is a Sample Event", TRUE, 4, 1, '1', '1', 5, FALSE, "Zeus");
+VALUES ("sampleEvent", "URL", 1000, "This is a Sample Event", TRUE, 4, 1, '1', '1', 10, TRUE, "Zeus");
 
 -- table for registration details ------------------------------------------------------------------
 

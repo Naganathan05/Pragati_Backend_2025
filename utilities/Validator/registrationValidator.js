@@ -1,3 +1,5 @@
+import { validateEmail } from "../dataValidator.js";
+
 const validateEventRegistration = (userID, eventID, totalMembers, teamName) => {
     if (!(typeof (eventID) === "number" && eventID >= 1 &&
         typeof(userID) === "number" && userID >= 1 &&
