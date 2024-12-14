@@ -1,5 +1,5 @@
 // helper functions for data validation and consistent response
-import { validateEmail, validateOTP, validatePassword, validateSignupData } from "../utilities/dataValidator/auth.js";
+import { validateEmail, validateOTP, validatePassword, validateSignupData } from "../utilities/Validator/auth.js";
 
 import {
   setResponseOk,

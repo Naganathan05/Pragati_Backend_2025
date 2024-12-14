@@ -173,6 +173,9 @@ CREATE TABLE IF NOT EXISTS `organizerData` (
   `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `organizerData` (`organizerName`, `phoneNumber`)
+VALUES ("Naganathan", "1234567895");
+
 
 -- table for mapping many-to-many relation between eventData and organizerData --------------------------
 

@@ -7,6 +7,6 @@ const router = Router();
 
 router.use('/auth',authRouter);
 router.use('/org',organizerRouter)
-router.use('/event', registrationRouter);
+router.use('/registration', registrationRouter);
 
 export default router;

@@ -3,11 +3,12 @@ import {
     setResponseBadRequest,
     setResponseInternalError
   } from "../utilities/response.js";
-  import { pragatiDb, transactionsDb } from "../db/poolConnection.js";
 import { appendFileSync } from "fs";
-import { validateEventGroup } from "../utilities/Validator/registrationValidator.js";
 import { generateHash } from "../utilities/PayU/util.js"
-import { checkValidUser, checkEventExistence, checkDuplicateTransaction } from "../utilities/dbUtilities.js";
+import { pragatiDb, transactionsDb } from "../db/poolConnection.js";
+import { checkValidUser } from "../utilities/dbUtilities/userUtilities.js";
+import { validateEventGroup } from "../utilities/Validator/registrationValidator.js";
+import { checkDuplicateTransaction, checkEventExistence } from "../utilities/dbUtilities/registrationUtilities.js";
 
 const registrationModule = {
     addRegistration: async function (userID, eventID, totalMembers, teamName, teamMembers, memberRoles) {
@@ -164,11 +165,11 @@ const registrationModule = {
                 // await db.query("UNLOCK TABLES");
 
                 const hashedData = generateHash({
-                    "txnID": txnID,
-                    "amount": paymentAmount,
-                    "productInfo": productInfo,
-                    "userName": userName,
-                    "userEmail": userEmail
+                    "txnid": txnID,
+                    "amount": paymentAmount.toString(),
+                    "productinfo": productInfo,
+                    "firstname": userName,
+                    "email": userEmail
                 });
 
                 return setResponseOk("Proceed to Pay. Seat Blocked.", {
@@ -344,11 +345,11 @@ const registrationModule = {
                 // await db.query("UNLOCK TABLES");
 
                 const hashedData = generateHash({
-                    "txnID": txnID,
-                    "amount": paymentAmount,
-                    "productInfo": productInfo,
-                    "userName": userName,
-                    "userEmail": userEmail
+                    "txnid": txnID,
+                    "amount": paymentAmount.toString(),
+                    "productinfo": productInfo,
+                    "firstname": userName,
+                    "email": userEmail
                 });
 
                 return setResponseOk("Proceed to Pay. Seats Blocked.", {

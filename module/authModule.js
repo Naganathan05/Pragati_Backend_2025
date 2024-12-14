@@ -10,7 +10,8 @@ import { logError } from "../utilities/errorLogger.js";
 import { createToken } from "../middleware/tokenGenerator.js";
 import { validateOTP } from "../utilities/OTP/validateOTP.js";
 import { generateOTP } from "../utilities/OTP/otpGenerator.js";
-import { isUserExistsByEmail, checkValidUser } from "../utilities/dbUtilities.js";
+import { isUserExistsByEmail } from "../utilities/dbUtilities/common.js";
+import { checkValidUser } from "../utilities/dbUtilities/userUtilities.js"
 import { sendForgotPasswordOtp, sendRegistrationOTP } from "../utilities/mailer/mailer.js"
 import { pragatiDb } from "../db/poolConnection.js";
 
