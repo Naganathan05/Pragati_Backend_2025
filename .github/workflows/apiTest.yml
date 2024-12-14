@@ -28,6 +28,13 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Step 4: Run tests
+    # Step 4: Start the server
+    - name: Start the server
+      run: |
+        npm start &
+        echo "Waiting for server to start..."
+        sleep 5 # Adjust the sleep time if necessary
+
+    # Step 5: Run tests
     - name: Run tests
       run: npm test
