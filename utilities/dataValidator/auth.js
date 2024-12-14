@@ -1,4 +1,5 @@
 import validator from "validator";
+import { validatePhoneNumber } from "./common.js";
 
 // function that validates email
 const validateEmail = (email) => {
@@ -33,14 +34,6 @@ const validateOTP = (otp) => {
     return true;
   }
   return false;
-};
-
-
-const validatePhoneNumber = (phoneNumber) => {
-  return (
-    typeof phoneNumber === "string" &&
-    validator.isMobilePhone(phoneNumber, "en-IN")
-  );
 };
 
 // Function to validate academic year
@@ -106,10 +99,10 @@ const validateSignupData = (data) => {
   if (
     data.isAmrita === null || typeof data.isAmrita != "boolean" ||
     (data.isAmrita != false && data.isAmrita != true)
-  ){
+  ) {
     return "Invalid isAmrita Value";
   }
-    return null;
+  return null;
 };
 
 export { validateEmail, validatePassword, validateSignupData, validateOTP };
