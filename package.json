@@ -5,7 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "test": "mocha test --recursive --exit"
   },
   "author": "Thanus Kumarr, Naganathan, Saran",
   "license": "ISC",
@@ -23,5 +24,10 @@
     "os": "^0.1.2",
     "otp-generator": "^4.0.1",
     "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "mocha": "^11.0.1"
   }
 }
