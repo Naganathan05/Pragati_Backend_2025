@@ -4,6 +4,6 @@ import { tokenValidator } from "../middleware/auth/tokenValidator.js";
 
 const registrationRouter = Router();
 
-registrationRouter.post("/registerEvent", tokenValidator, registrationController.addRegistration);
+registrationRouter.post("/registerEvent", tokenValidator("JWT"), registrationController.addRegistration);
 
 export default registrationRouter;
