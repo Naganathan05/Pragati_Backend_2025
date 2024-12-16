@@ -1,4 +1,5 @@
 import { isUserExistsByEmail, isUserExistsByUserID } from "./common.js";
+import { logError } from "../errorLogger.js";
 
 /*
   Response Codes:
@@ -37,7 +38,7 @@ const checkValidUser = async function(userEmail, db, category, userID){
       response.responseData = userData;
       return response;
     } catch (error) {
-      console.error("[ERROR]: Error in checkValidUser Utility: ", error);
+      logError(err, "checkValidUser","db");
       throw new Error("Database query failed.");
     }
   };

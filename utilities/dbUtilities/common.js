@@ -1,5 +1,7 @@
+import { logError } from "../errorLogger.js";
+
 // Check if a user exists by email
-const isUserExistsByEmail = async function (email,db) {
+const isUserExistsByEmail = async function (email, db) {
   try {
     await db.query("LOCK TABLES userData READ");
     const [result] = await db.query(
@@ -9,30 +11,27 @@ const isUserExistsByEmail = async function (email,db) {
     await db.query("UNLOCK TABLES");
     return result.length > 0 ? result : null;
   } catch (err) {
-    console.error("[ERROR]: Error in isUserExistsByEmail: ", err);
+    logError(err, "isUserExistsByEmail","db");
     throw new Error("Database query failed.");
   } finally {
     await db.query("UNLOCK TABLES");
-    db.release();
   }
 };
 
 // Check if a user exists by userID
-const isUserExistsByUserID = async function (userID,db) {
+const isUserExistsByUserID = async function (userID, db) {
   try {
     await db.query("LOCK TABLES userData READ");
-    const [result] = await db.query(
-      "SELECT * FROM userData WHERE userID = ?",
-      [userID]
-    );
+    const [result] = await db.query("SELECT * FROM userData WHERE userID = ?", [
+      userID,
+    ]);
     await db.query("UNLOCK TABLES");
     return result.length > 0 ? result : null;
   } catch (err) {
-    console.error("[ERROR]: Error in isUserExistsByUserID: ", err);
+    logError(err, "isUserExistsByUserID","db");
     throw new Error("Database query failed.");
   } finally {
     await db.query("UNLOCK TABLES");
-    db.release();
   }
 };
 

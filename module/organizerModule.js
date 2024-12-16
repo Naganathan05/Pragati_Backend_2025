@@ -23,6 +23,48 @@ const organizerModule = {
       db.release();
     }
   },
+
+  removeOrganizer: async (organizerID) => {
+    const db = await pragatiDb.promise().getConnection();
+    try {      
+      // Locking the table to prevent concurrent updates to "organizerData"  table.
+      await db.query("LOCK TABLES organizerData WRITE");
+      // Used ON DELETE CASCADE to automatically remove linked rows in organizerEventMapping when an organizer is deleted.
+      const query = `DELETE FROM organizerData WHERE organizerID = ?;`;
+      const [result] = await db.query(query, [organizerID]);
+      
+      if (result.affectedRows === 0) {
+        return setResponseBadRequest("Organizer not found or no deletions made.");
+      }
+      return setResponseOk("Organizer deleted successfully.");
+    } catch (error) {
+      logError(error, "organizerModule:removeOrganizer", "db");
+      return setResponseInternalError();
+    } finally {
+      await db.query("UNLOCK TABLES");
+      db.release();
+    }
+  },
+
+addOrganizer: async(organizerName, phoneNumber) => {
+  const db = await pragatiDb.promise().getConnection();
+  try {      
+    // Locking the table to prevent concurrent updates to "organizerData"  table.
+    await db.query("LOCK TABLES organizerData WRITE");
+    const query = `INSERT INTO organizerData (organizerName, phoneNumber) VALUES(?, ?);`;
+    const [result] = await db.query(query, [organizerName, phoneNumber]);
+    if (result.affectedRows === 0) {
+      return setResponseBadRequest("Organizer not added.");
+    }
+    return setResponseOk("Organizer added successfully.");
+  }catch (error) {
+    logError(error, "organizerModule:addOrganizer", "db");
+    return setResponseInternalError();
+  } finally {
+    await db.query("UNLOCK TABLES");
+    db.release();
+  }
+}
 };
 
 export default organizerModule;
