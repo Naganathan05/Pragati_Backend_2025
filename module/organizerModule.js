@@ -65,7 +65,7 @@ const organizerModule = {
       db.release();
     }
   },
-  getAllOrganizer: async () => {
+  getAllOrganizer: async (req, res) => {
     const db = await pragatiDb.promise().getConnection();
     try {
       const [organizers] = await db.query("SELECT * FROM organizerData;");
