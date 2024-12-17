@@ -84,7 +84,21 @@ const organizerController = {
         }
 
     },
-
+    /* 
+        Get All Organizers 
+        No request body required
+    */
+    getAllOrganizer: async (req, res) => {
+        try {
+            const response = await organizerModule.getAllOrganizer();
+            return res.status(response.responseCode).json(response.responseBody);
+        } catch (error) {
+            logError(error, "organizerController:getAllOrganizer", "db");
+            const response = setResponseInternalError();
+            return res.status(response.responseCode).json(response.responseBody);
+        }
+    },
+  
 };
 
 

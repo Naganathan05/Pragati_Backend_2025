@@ -1,5 +1,5 @@
 import { pragatiDb } from "../db/poolConnection.js";
-import { setResponseOk, setResponseBadRequest, setResponseInternalError } from "../utilities/response.js";
+import { setResponseOk, setResponseBadRequest, setResponseInternalError, setResponseNotFound } from "../utilities/response.js";
 import { logError } from "../utilities/errorLogger.js";
 
 const organizerModule = {
@@ -46,25 +46,40 @@ const organizerModule = {
     }
   },
 
-addOrganizer: async(organizerName, phoneNumber) => {
-  const db = await pragatiDb.promise().getConnection();
-  try {      
-    // Locking the table to prevent concurrent updates to "organizerData"  table.
-    await db.query("LOCK TABLES organizerData WRITE");
-    const query = `INSERT INTO organizerData (organizerName, phoneNumber) VALUES(?, ?);`;
-    const [result] = await db.query(query, [organizerName, phoneNumber]);
-    if (result.affectedRows === 0) {
-      return setResponseBadRequest("Organizer not added.");
+  addOrganizer: async(organizerName, phoneNumber) => {
+    const db = await pragatiDb.promise().getConnection();
+    try {      
+      // Locking the table to prevent concurrent updates to "organizerData"  table.
+      await db.query("LOCK TABLES organizerData WRITE");
+      const query = `INSERT INTO organizerData (organizerName, phoneNumber) VALUES(?, ?);`;
+      const [result] = await db.query(query, [organizerName, phoneNumber]);
+      if (result.affectedRows === 0) {
+        return setResponseBadRequest("Organizer not added.");
+      }
+      return setResponseOk("Organizer added successfully.");
+    }catch (error) {
+      logError(error, "organizerModule:addOrganizer", "db");
+      return setResponseInternalError();
+    } finally {
+      await db.query("UNLOCK TABLES");
+      db.release();
     }
-    return setResponseOk("Organizer added successfully.");
-  }catch (error) {
-    logError(error, "organizerModule:addOrganizer", "db");
-    return setResponseInternalError();
-  } finally {
-    await db.query("UNLOCK TABLES");
-    db.release();
-  }
-}
+  },
+  getAllOrganizer: async () => {
+    const db = await pragatiDb.promise().getConnection();
+    try {
+      const [organizers] = await db.query("SELECT * FROM organizerData;");
+      if (organizers.length === 0) {
+        return setResponseNotFound("No organizers found.");
+      }
+      return setResponseOk("All Organizers retrieved successfully.", organizers);
+    } catch (error) {
+      logError(error, "organizerModule:getAllOrganizer", "db");
+      return setResponseInternalError();
+    } finally {
+      db.release();
+    }
+  },
 };
 
 export default organizerModule;
