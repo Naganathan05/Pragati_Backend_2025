@@ -3,7 +3,7 @@ import organizerController from "../controller/organizerController.js";
 import { tokenValidator } from "../middleware/auth/tokenValidator.js";
 
 const organizerRouter = Router();
-// organizerRouter.use(tokenValidator);
+organizerRouter.use(tokenValidator);
 
 organizerRouter.put("/editOrganizer", organizerController.editOrganizer);
 organizerRouter.delete("/removeOrganizer",organizerController.removeOrganizer);
