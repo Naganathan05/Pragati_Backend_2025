@@ -5,9 +5,9 @@ import { tokenValidator } from "../middleware/auth/tokenValidator.js";
 const organizerRouter = Router();
 organizerRouter.use(tokenValidator);
 
-organizerRouter.put("/editOrganizer", organizerController.editOrganizer);
-organizerRouter.delete("/removeOrganizer",organizerController.removeOrganizer);
-organizerRouter.post("/addOrganizer",organizerController.addOrganizer);
-organizerRouter.get("/getAllOrganizer",organizerController.getAllOrganizer);
+organizerRouter.put("/", organizerController.editOrganizer);
+organizerRouter.delete("/",organizerController.removeOrganizer);
+organizerRouter.post("/",organizerController.addOrganizer);
+organizerRouter.get("/",organizerController.getAllOrganizer);
 
-export default organizerRouter
+export default organizerRouter;
