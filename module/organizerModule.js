@@ -68,6 +68,8 @@ const organizerModule = {
   getAllOrganizer: async (req, res) => {
     const db = await pragatiDb.promise().getConnection();
     try {
+      // Locking the table to prevent concurrent access to "organizerData"  table.
+      await db.query("LOCK TABLES organizerData READ;");
       const [organizers] = await db.query("SELECT * FROM organizerData;");
       if (organizers.length === 0) {
         return setResponseNotFound("No organizers found.");
@@ -77,6 +79,7 @@ const organizerModule = {
       logError(error, "organizerModule:getAllOrganizer", "db");
       return setResponseInternalError();
     } finally {
+      await db.query("UNLOCK TABLES;");
       db.release();
     }
   },
