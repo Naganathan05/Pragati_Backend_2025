@@ -43,12 +43,12 @@ DROP TABLE IF EXISTS `clubData`;
 -- table for user role ---------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `userRole` (
-    `roleID` INT AUTO_INCREMENT PRIMARY KEY,
+    `roleID` INT DEFAULT 2 PRIMARY KEY,
     `roleName` VARCHAR(50) NOT NULL,
     `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into `userRole` (`createdAt`, `roleID`, `roleName`) values (CURRENT_TIMESTAMP, 1, 'User');
+insert into `userRole` (`createdAt`, `roleID`, `roleName`) values (CURRENT_TIMESTAMP, 1, 'Admin'), (CURRENT_TIMESTAMP, 2, 'User');
 
 -- Table for user data -----------------------------------------------------------------------------
 

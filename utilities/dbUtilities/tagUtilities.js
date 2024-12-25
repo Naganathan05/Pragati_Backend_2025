@@ -18,4 +18,27 @@ const checkTagIDsExists = async function (tagIDs, db) {
   }
 };
 
-export { checkTagIDsExists };
+const findTagByNameOrAbbreviation = async (tagName, tagAbbrevation, excludeId = null, db) => {
+  try {
+    let query = "SELECT * FROM tagData WHERE (tagName = ? OR tagAbbrevation = ?)";
+    const params = [tagName, tagAbbrevation];
+
+    // If excludeId is provided, exclude that tag (useful for updates)
+    if (excludeId) {
+      query += " AND tagID != ?";
+      params.push(excludeId);
+    }
+
+    await db.query("LOCK TABLES tagData READ");
+    const [rows] = await db.query(query, params);
+
+    return rows.length > 0 ? rows[0] : null;
+  } catch (err) {
+    logError(err, "tagUtilities.findTagByNameOrAbbreviation", "db");
+    return null;
+  } finally {
+    await db.query("UNLOCK TABLES");
+  }
+};
+
+export { checkTagIDsExists, findTagByNameOrAbbreviation};
