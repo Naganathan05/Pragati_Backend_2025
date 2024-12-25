@@ -50,23 +50,7 @@ const registrationModule = {
             const eventData = eventExistsResponse.responseBody.DATA;
 
 
-            // Checking if the User already has registered as "TEAM LEAD" for the Event.
-            await db.query("LOCK TABLES registrationData READ;");
-            const [registrationData] = await db.query(
-                "SELECT * FROM registrationData WHERE userID = ? AND eventID = ?",
-                [userID, eventID]
-            );
-
-            if(registrationData.length > 0) {
-                return setResponseBadRequest(
-                    "You have already registered for the Event or the Registration is Pending ! Complete it Before trying another attempt."
-                );
-            }
-
-            await db.query("UNLOCK TABLES");
-
-
-            // Checking if the Users has already registered as "TEAM MEMBER" for the Event.
+            // Checking if the Users has already registered for the Event.
             await db.query("LOCK TABLES groupDetail READ;");
             const [eventGroupData] = await db.query(
                 "SELECT * FROM groupDetail WHERE userID = ? AND eventID = ?",
@@ -219,20 +203,8 @@ const registrationModule = {
                 for(let i = 0; i < userTeamDataCheck.length; i++){
                     userIDs.push(userTeamDataCheck[i].userID);
                 }
-                
-                // Checking if any of the Team Member has already Registered for the Event as "TEAM LEAD".
-                const [eventRegistrationCheck] = await db.query(
-                    "SELECT * FROM registrationData WHERE eventID = ? AND userID IN (?)",
-                    [eventID, userIDs]
-                );
 
-                if(eventRegistrationCheck.length > 0) {
-                    return setResponseBadRequest(
-                        "Failed to Register. One of Teammates have already Registered for the same Event."
-                    );
-                }
-
-                // Checking if any of the Team Member has already Registered for the Event as "TEAM MEMBER".
+                // Checking if any of the Team Member has already Registered for the Event.
                 const [eventRegistrationGroupCheck] = await db.query(
                     "SELECT * FROM groupDetail WHERE eventID = ? AND userID IN (?)",
                     [eventID, userIDs]
