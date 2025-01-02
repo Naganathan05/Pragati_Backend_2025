@@ -9,7 +9,8 @@ export const appConfig = {
     otpTokenSecretKey: process.env.OTP_SECRET_KEY,
     db: {
         pragati: {
-            host: 'localhost',
+            host: process.env.DB_HOST || 'localhost',
+            port: process.env.DB_PORT || 3306,
             user: process.env.DB_USERNAME || 'root',
             password: process.env.DB_PWD || 'password',
             database: process.env.PRAGATI_DB_NAME || 'pragati_2025',
@@ -19,7 +20,8 @@ export const appConfig = {
             multipleStatements: true
         },
         transactions: {
-            host: 'localhost',
+            host: process.env.DB_HOST || 'localhost',
+            port: process.env.DB_PORT || 3306,
             user: process.env.DB_USERNAME || 'root',
             password: process.env.DB_PWD || 'password',
             database: process.env.TXN_DB_NAME || 'pragati_transactions_2025',

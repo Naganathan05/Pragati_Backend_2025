@@ -43,12 +43,12 @@ DROP TABLE IF EXISTS `clubData`;
 -- table for user role ---------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `userRole` (
-    `roleID` INT AUTO_INCREMENT PRIMARY KEY,
+    `roleID` INT DEFAULT 2 PRIMARY KEY,
     `roleName` VARCHAR(50) NOT NULL,
     `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into `userRole` (`createdAt`, `roleID`, `roleName`) values (CURRENT_TIMESTAMP, 1, 'User');
+insert into `userRole` (`createdAt`, `roleID`, `roleName`) values (CURRENT_TIMESTAMP, 1, 'Admin'), (CURRENT_TIMESTAMP, 2, 'User');
 
 -- Table for user data -----------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ insert into `userData` (`academicYear`, `accountStatus`, `collegeCity`, `college
 -- table for temporary otp storage (Engine:in-memory storage) -----------------------------------------
 
 CREATE TABLE IF NOT EXISTS `otpTable` (
-  `userID` INT NOT NULL,
+  `userID` INT NOT NULL PRIMARY KEY,
   `otp` VARCHAR(255),
   `expiryTime` TIMESTAMP NOT NULL DEFAULT ( createdAt + INTERVAL 5 MINUTE ),
   `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -124,12 +124,12 @@ CREATE TABLE IF NOT EXISTS `registrationData` (
   `totalMembers` INT NOT NULL DEFAULT 1,
   `teamName` VARCHAR(255) DEFAULT NULL,
   `userID` INT,
-  `registrationStatus` CHAR(1) NOT NULL DEFAULT "1",
+  `registrationStatus` CHAR(1) NOT NULL DEFAULT '1',
   `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
   CONSTRAINT FOREIGN KEY (`eventID`) REFERENCES `eventData` (`eventID`) ON DELETE SET NULL,
   CONSTRAINT FOREIGN KEY (`userID`) REFERENCES `userData` (`userID`) ON DELETE SET NULL,
-  CONSTRAINT CHECK (registrationStatus IN ("1", "2", "3", "4", "5", "6", "7"))
+  CONSTRAINT CHECK (registrationStatus IN ('1', '2', '3', '4', '5', '6', '7'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- registrationStatus:
 -- 1 -> REGISTRATION INITIATED. PAYMENT PENDING

@@ -1,0 +1,129 @@
+import validator from "validator"
+import eventModule from "../module/eventModule.js";
+import { validateAddEventData } from "../utilities/dataValidator/event.js";
+import { setResponseBadRequest } from "../utilities/response.js";
+import { logError } from "../utilities/errorLogger.js";
+import { setResponseInternalError } from "../utilities/response.js";
+
+const eventController = {
+  /*
+    Request Header: Bearer Token
+    {
+      "eventName": "string",
+      "imageUrl": "string",
+      "eventFee": number,
+      "eventDescription": "string",
+      "eventDescSmall": "string",
+      "isGroup": "boolean",
+      "maxTeamSize": number,
+      "minTeamSize": number,
+      "eventDate": "character",
+      "maxRegistrations": number,
+      "isPerHeadFee": "boolean",
+      "godName": "string",
+      "organizerIDs": [number, number,...],
+      "tagIDs": [number, number,...],
+      "clubID": number
+    }
+  */
+  addEvent: async (req, res) => {
+    const {
+      eventName,
+      imageUrl,
+      eventFee,
+      eventDescription,
+      eventDescSmall,
+      isGroup,
+      eventDate,
+      maxRegistrations,
+      isPerHeadFee,
+      godName,
+      organizerIDs,
+      tagIDs,
+      clubID,
+    } = req.body;
+
+    //validating the req.body
+    const errors = validateAddEventData(req.body);
+    if (errors != null) {
+      const response = setResponseBadRequest(errors);
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+
+    // assigning default value to team size, as it will be undefined if isGroup is false
+    let maxTeamSize = 1;
+    let minTeamSize = 1;
+
+    if (isGroup === true) {
+      maxTeamSize = req.body.maxTeamSize || 1;
+      minTeamSize = req.body.minTeamSize || 1;
+    }
+    try {
+      // not passing sending req.body.userID as it will be checked during login itself
+      const response = await eventModule.addEvent(
+        eventName,
+        imageUrl,
+        eventFee,
+        eventDescription,
+        eventDescSmall,
+        isGroup,
+        eventDate,
+        maxRegistrations,
+        isPerHeadFee,
+        godName,
+        organizerIDs,
+        tagIDs,
+        clubID,
+        minTeamSize,
+        maxTeamSize
+      );
+      return res.status(response.responseCode).json(response.responseBody);
+    } catch (err) {
+      logError(err, "eventController:addEvent", "db");
+      const response = setResponseInternalError();
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+  },
+  getAllEvents: async (req, res) => {
+    try {
+      const response = await eventModule.getAllEvents();
+      return res.status(response.responseCode).json(response.responseBody);
+    } catch (err) {
+      logError(err, "eventController:getAllEvents", "db");
+      const response = setResponseInternalError();
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+  },
+  getEventDetailsByID: async (req, res) => {
+    const { eventID } = req.params;
+    if (!validator.isNumeric(eventID)) {
+      const response = setResponseBadRequest("valid event ID not found");
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+    try {
+      const response = await eventModule.getEventDetailsByID(eventID);
+      return res.status(response.responseCode).json(response.responseBody);
+    } catch (err) {
+      logError(err, "eventController:getEventDetailsByID", "db");
+      const response = setResponseInternalError();
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+  },
+  getEventForClub: async (req, res) => {
+    const { clubID } = req.params;
+    if (!validator.isNumeric(clubID)) {
+      const response = setResponseBadRequest("valid club ID not found");
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+    try {
+      const response = await eventModule.getEventForClub(clubID);
+      return res.status(response.responseCode).json(response.responseBody);
+    } catch (err) {
+      logError(err, "eventController:getEventForClub", "db");
+      const response = setResponseInternalError();
+      return res.status(response.responseCode).json(response.responseBody);
+    }
+  },
+};
+
+export default eventController;

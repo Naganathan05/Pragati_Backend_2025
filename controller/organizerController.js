@@ -1,7 +1,7 @@
 import {setResponseBadRequest, setResponseInternalError } from "../utilities/response.js";
 import organizerModule from "../module/organizerModule.js";
 import { logError } from "../utilities/errorLogger.js";
-import { validateOrganizerData } from "../utilities/dataValidator/organizer.js";
+import { validateOrganizer, validateOrganizerData, validateRemoveOrganizerData } from "../utilities/dataValidator/organizer.js";
 
 const organizerController = {
     /* 
@@ -31,11 +31,59 @@ const organizerController = {
             return res.status(response.responseCode).json(response.responseBody);
         }
     },
-    removeOrganizer: async (req, res) => {},
     /* 
-        Comment for addOrganiser function
+        Remove Organizer request body
+        {
+            "organizerID": "integer"
+        }
     */
-    addOrganizer: async (req, res) => {},
+    removeOrganizer: async (req, res) => {
+        const {organizerID} = req.body;
+        
+    
+        // Validate organizer data
+        const validationError = validateRemoveOrganizerData(organizerID);
+        if (validationError) {
+            const response = setResponseBadRequest(validationError);
+            return res.status(response.responseCode).json(response.responseBody);
+        }
+    
+        try {
+            const response = await organizerModule.removeOrganizer(organizerID);
+            return res.status(response.responseCode).json(response.responseBody);
+        } catch (error) {
+            logError(error, "organizerController:removeOrganizer", "db");
+            const response = setResponseInternalError();
+            return res.status(response.responseCode).json(response.responseBody);
+        }
+    },
+    /* 
+        Add Organizer request body
+        {
+            "organizerName": "string",
+            "phoneNumber": "string"
+        }
+    */
+    addOrganizer: async (req, res) => {
+        const { organizerName, phoneNumber } = req.body;
+
+        // Validate organizer data
+        const validationError = validateOrganizer(organizerName, phoneNumber);
+        if (validationError) {
+            const response = setResponseBadRequest(validationError);
+            return res.status(response.responseCode).json(response.responseBody);
+        }
+    
+        try {
+            const response = await organizerModule.addOrganizer(organizerName, phoneNumber);
+            return res.status(response.responseCode).json(response.responseBody);
+        } catch (error) {
+            logError(error, "organizerController:editOrganizer", "db");
+            const response = setResponseInternalError();
+            return res.status(response.responseCode).json(response.responseBody);
+        }
+
+    },
 
 };
 

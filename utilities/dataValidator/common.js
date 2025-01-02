@@ -7,4 +7,13 @@ const validatePhoneNumber = (phoneNumber) => {
   );
 };
 
-export { validatePhoneNumber };
+// Function to  validate standard MySQL VARCHAR(255)
+const validateBasicString = (string, len = 255) => {
+  return (
+    typeof string == "string" &&
+    string !== null &&
+    validator.isLength(string.trim(), { min: 1, max: len })
+  );
+};
+
+export { validatePhoneNumber, validateBasicString };
