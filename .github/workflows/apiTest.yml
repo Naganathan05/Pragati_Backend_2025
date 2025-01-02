@@ -28,13 +28,33 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Step 4: Start the server
+    # Step 4: Create .env file
+    - name: Create .env file
+      run: |
+        rm -f .env
+        echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+        echo "SERVER_URL=${{ secrets.SERVER_URL }}" >> .env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+        echo "DB_PWD=${{ secrets.DB_PWD }}" >> .env
+        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+        echo "PRAGATI_DB_NAME=${{ secrets.PRAGATI_DB_NAME }}" >> .env
+        echo "TXN_DB_NAME=${{ secrets.TXN_DB_NAME }}" >> .env
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+        echo "OTP_SECRET_KEY=${{ secrets.OTP_SECRET_KEY }}" >> .env
+        echo "MAILER_SERVICE=${{ secrets.MAILER_SERVICE }}" >> .env
+        echo "MAILER_HOST=${{ secrets.MAILER_HOST }}" >> .env
+        echo "MAILER_PORT=${{ secrets.MAILER_PORT }}" >> .env
+        echo "MAILER_USER=${{ secrets.MAILER_USER }}" >> .env
+        echo "MAILER_PASS=${{ secrets.MAILER_PASS }}" >> .env
+
+    # Step 5: Start the server
     - name: Start the server
       run: |
         npm start &
         echo "Waiting for server to start..."
         sleep 5 # Adjust the sleep time if necessary
 
-    # Step 5: Run tests
+    # Step 6: Run tests
     - name: Run tests
       run: npm test
