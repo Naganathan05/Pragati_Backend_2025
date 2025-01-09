@@ -1,6 +1,6 @@
 import "dotenv/config.js";
 import { appConfig } from "./config/config.js";
-import { validateEnv } from "./config/envValidator.js";
+import { validateEnv } from "./utilities/envValidator.js";
 
 // Imports for Express, CORS, Helmet
 import express, { json } from "express";

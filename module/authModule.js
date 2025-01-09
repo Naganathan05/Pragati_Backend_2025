@@ -2,15 +2,14 @@ import crypto from "crypto";
 import {
   setResponseOk,
   setResponseBadRequest,
-  setResponseUnauth,
-  setResponseInternalError,
-  setResponseTimedOut
+  setResponseInternalError
 } from "../utilities/response.js";
 import { logError } from "../utilities/errorLogger.js";
 import { createToken } from "../middleware/tokenGenerator.js";
 import { validateOTP } from "../utilities/OTP/validateOTP.js";
 import { generateOTP } from "../utilities/OTP/otpGenerator.js";
-import { isUserExistsByEmail, checkValidUser } from "../utilities/dbUtilities.js";
+import { isUserExistsByEmail } from "../utilities/dbUtilities/common.js";
+import { checkValidUser } from "../utilities/dbUtilities/userUtilities.js"
 import { sendForgotPasswordOtp, sendRegistrationOTP } from "../utilities/mailer/mailer.js"
 import { pragatiDb } from "../db/poolConnection.js";
 
@@ -18,11 +17,13 @@ const authModule = {
   login: async function (email, password) {
     const db = await pragatiDb.promise().getConnection();
     try {
-      // returns details of user if exists, else null
-      const userData = await isUserExistsByEmail(email, db);
-      if (userData == null) {
-        return setResponseBadRequest("User not found!");
+      // response will be sent in default response format
+      const response = await checkValidUser(email, db, "userEmail", null);
+      if(response.responseCode !== 200){
+        return response;
       }
+      const userData = response.responseData;
+
       if (userData[0].userPassword != password) {
         return setResponseBadRequest("Incorrect password for given user..");
       }

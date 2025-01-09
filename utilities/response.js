@@ -13,6 +13,13 @@ const setResponseOk = (message, data = {}) => {
   return response;
 };
 
+const setResponseNotFound = (message, data = {}) => {
+  response.responseCode = 404;
+  response.responseBody.MESSAGE = message;
+  response.responseBody.DATA = data;
+  return response;
+};
+
 const setResponseBadRequest = (message, data = {}) => {
   response.responseCode = 400;
   response.responseBody.MESSAGE = message;
@@ -43,6 +50,7 @@ const setResponseTimedOut = (message, data = {}) => {
 
 export {
   setResponseOk,
+  setResponseNotFound,
   setResponseBadRequest,
   setResponseUnauth,
   setResponseInternalError,

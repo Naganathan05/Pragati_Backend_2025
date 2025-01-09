@@ -80,5 +80,4 @@ MAILER_PASS=<MAILER_PASSWORD>
   npm start
   ```
 
----
 

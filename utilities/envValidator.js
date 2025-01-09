@@ -5,6 +5,8 @@ const validateEnv = () => {
         SERVER_PORT: 'number',
         DB_USERNAME: 'string',
         DB_PWD: 'string',
+        DB_HOST: 'string',
+        DB_PORT: 'number',
         PRAGATI_DB_NAME: 'string', 
         TXN_DB_NAME: 'string',     
         SECRET_KEY: 'string',
