@@ -28,6 +28,6 @@ const TEMPLATE_FORGOT_PASSWORD_OTP = (otp, userName) => {
     </body>
 
     </html>`;
-}
+};
 
 export default TEMPLATE_FORGOT_PASSWORD_OTP;

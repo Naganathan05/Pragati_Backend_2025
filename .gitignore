@@ -5,3 +5,4 @@ package-lock.json
 /middleware/encryptionKeys/privateKey.pem
 /middleware/encryptionKeys/publicKey.pem
 logs
+.DS_Store

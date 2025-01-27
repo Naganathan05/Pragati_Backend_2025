@@ -28,6 +28,6 @@ const TEMPLATE_OTP = (otp, userName) => {
     </body>
 
     </html>`;
-}
+};
 
 export default TEMPLATE_OTP;

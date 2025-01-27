@@ -8,8 +8,8 @@ const clubRouter = Router();
 clubRouter.get("/", clubController.getAllClubs); // GET: Fetch all clubs (No token validation required)
 
 // Apply tokenValidator only for protected routes
-clubRouter.post("/", tokenValidator("JWT"), clubController.addClub);    // POST: Add a new club
-clubRouter.put("/", tokenValidator("JWT"), clubController.editClub);    // PUT: Edit an existing club
+clubRouter.post("/", tokenValidator("JWT"), clubController.addClub); // POST: Add a new club
+clubRouter.put("/", tokenValidator("JWT"), clubController.editClub); // PUT: Edit an existing club
 clubRouter.delete("/", tokenValidator("JWT"), clubController.removeClub); // DELETE: Remove a club
 
 export default clubRouter;

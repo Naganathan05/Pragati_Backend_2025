@@ -1,29 +1,34 @@
 {
-  "name": "pragati_2025_server",
-  "version": "1.0.0",
-  "description": "Backend Server Code for Pragati 2025",
-  "main": "server.js",
-  "type": "module",
-  "scripts": {
-    "dev": "nodemon server.js"
-  },
-  "author": "Thanus Kumarr, Naganathan, Saran",
-  "license": "ISC",
-  "dependencies": {
-    "cluster": "^0.7.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "helmet": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.11.3",
-    "nodemailer": "^6.9.16",
-    "nodemon": "^3.1.9",
-    "os": "^0.1.2",
-    "otp-generator": "^4.0.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
-    "validator": "^13.12.0"
-  }
+    "name": "pragati_2025_server",
+    "version": "1.0.0",
+    "description": "Backend Server Code for Pragati 2025",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js",
+        "format": "node --experimental-vm-modules --disable-warning=ExperimentalWarning node_modules/prettier/bin/prettier.cjs . --write"
+    },
+    "author": "Thanus Kumarr, Naganathan, Saran",
+    "license": "ISC",
+    "dependencies": {
+        "cluster": "^0.7.7",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.17.1",
+        "fs": "^0.0.1-security",
+        "helmet": "^8.0.0",
+        "jsonwebtoken": "^9.0.2",
+        "mysql2": "^3.11.3",
+        "nodemailer": "^6.9.16",
+        "nodemon": "^3.1.9",
+        "os": "^0.1.2",
+        "otp-generator": "^4.0.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1",
+        "validator": "^13.12.0"
+    },
+    "devDependencies": {
+        "prettier": "3.4.2"
+    }
 }

@@ -9,7 +9,7 @@ const authRouter = Router();
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Login with user credentials
+ *     summary: Login with user credentials. Returns JWT Token on successful login.
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -113,7 +113,15 @@ authRouter.post("/forgotPassword", authController.forgotPassword);
 authRouter.post("/signup", authController.signup);
 
 // OTP Token Validator added as Middleware.
-authRouter.post("/resetPassword", tokenValidator("OTP"), authController.resetPassword);
-authRouter.post("/verifyUser", tokenValidator("OTP"), authController.verifyUser);
+authRouter.post(
+    "/resetPassword",
+    tokenValidator("OTP"),
+    authController.resetPassword,
+);
+authRouter.post(
+    "/verifyUser",
+    tokenValidator("OTP"),
+    authController.verifyUser,
+);
 
 export default authRouter;
