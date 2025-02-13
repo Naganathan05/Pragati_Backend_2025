@@ -2,7 +2,7 @@ import {
     setResponseOk,
     setResponseBadRequest,
     setResponseTimedOut,
-    setResponseInternalError
+    setResponseInternalError,
 } from "../response.js";
 
 /*
@@ -12,30 +12,32 @@ import {
     responseCode = 200 -> OTP Validated.
 */
 
-export const validateOTP = async function (userID, OTP, db){
+export const validateOTP = async function (userID, OTP, db) {
     try {
-        const [otpRecord] = await db.query(`
+        const [otpRecord] = await db.query(
+            `
             SELECT * FROM otpTable
             WHERE userID = ? AND otp = ?`,
-            [userID, OTP]
+            [userID, OTP],
         );
 
-        if(otpRecord.length === 0){
+        if (otpRecord.length === 0) {
             return setResponseBadRequest("Invalid OTP");
-        } 
-            
-        const isExpired = await db.query(`   
+        }
+
+        const isExpired = await db.query(
+            `   
             DELETE FROM otpTable  
-            WHERE userID = ? AND otp = ? AND expiryTime > NOW()`,     
-            [userID, OTP]
+            WHERE userID = ? AND otp = ? AND expiryTime > NOW()`,
+            [userID, OTP],
         );
 
         if (isExpired[0].affectedRows === 0) {
             return setResponseTimedOut("OTP Expired. Retry !");
-        } 
+        }
 
         return setResponseOk("Valid OTP");
     } catch (error) {
         return setResponseInternalError(error);
     }
-}
+};

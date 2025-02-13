@@ -1,4 +1,9 @@
-const TEMPLATE_EVENT_REGISTRATION_OTP = (userName, eventName, transactionId, totalMembers) => {
+const TEMPLATE_EVENT_REGISTRATION_OTP = (
+    userName,
+    eventName,
+    transactionId,
+    totalMembers,
+) => {
     return `<!DOCTYPE html>
     <html lang="en">
 
@@ -28,6 +33,6 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (userName, eventName, transactionId, tot
     </body>
 
     </html>`;
-}
+};
 
 export default TEMPLATE_EVENT_REGISTRATION_OTP;
