@@ -5,27 +5,172 @@ import authorizeRoles from "../middleware/auth/authRoleValidator.js";
 
 const clubRouter = Router();
 
-// Routes
-clubRouter.get("/", clubController.getAllClubs); // GET: Fetch all clubs (No token validation required)
+/**
+ * @swagger
+ * tags:
+ *   name: Clubs
+ *   description: Club management endpoints
+ */
 
-// Apply tokenValidator only for protected routes
+/**
+ * @swagger
+ * /clubs:
+ *   get:
+ *     summary: Get all clubs
+ *     description: Retrieve a list of all available clubs
+ *     tags: [Clubs]
+ *     responses:
+ *       200:
+ *         description: List of clubs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Club'
+ *       500:
+ *         description: Server error
+ */
+clubRouter.get("/", clubController.getAllClubs);
+
+/**
+ * @swagger
+ * /clubs:
+ *   post:
+ *     summary: Add a new club (Admin only)
+ *     description: Create a new club entry
+ *     tags: [Clubs]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Club'
+ *     responses:
+ *       201:
+ *         description: Club created successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (invalid permissions)
+ *       500:
+ *         description: Server error
+ */
 clubRouter.post(
     "/",
     tokenValidator("JWT"),
     authorizeRoles([1]),
-    clubController.addClub,
-); // POST: Add a new club
+    clubController.addClub
+);
+
+/**
+ * @swagger
+ * /clubs:
+ *   put:
+ *     summary: Update a club (Admin only)
+ *     description: Modify existing club details
+ *     tags: [Clubs]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Club'
+ *     responses:
+ *       200:
+ *         description: Club updated successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (invalid permissions)
+ *       404:
+ *         description: Club not found
+ *       500:
+ *         description: Server error
+ */
 clubRouter.put(
     "/",
     tokenValidator("JWT"),
     authorizeRoles([1]),
-    clubController.editClub,
-); // PUT: Edit an existing club
+    clubController.editClub
+);
+
+/**
+ * @swagger
+ * /clubs:
+ *   delete:
+ *     summary: Delete a club (Admin only)
+ *     description: Remove a club from the system
+ *     tags: [Clubs]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               clubId:
+ *                 type: integer
+ *                 example: 123
+ *             required:
+ *               - clubId
+ *     responses:
+ *       200:
+ *         description: Club deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (invalid permissions)
+ *       404:
+ *         description: Club not found
+ *       500:
+ *         description: Server error
+ */
 clubRouter.delete(
     "/",
     tokenValidator("JWT"),
     authorizeRoles([1]),
-    clubController.removeClub,
-); // DELETE: Remove a club
+    clubController.removeClub
+);
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     Club:
+ *       type: object
+ *       properties:
+ *         clubId:
+ *           type: integer
+ *           readOnly: true
+ *         name:
+ *           type: string
+ *           example: "Tech Club"
+ *         description:
+ *           type: string
+ *           example: "Technology enthusiasts group"
+ *         imageUrl:
+ *           type: string
+ *           format: uri
+ *           example: "https://example.com/tech-club.jpg"
+ *       required:
+ *         - name
+ *         - description
+ */
 
 export default clubRouter;
