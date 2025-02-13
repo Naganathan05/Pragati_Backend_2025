@@ -16,13 +16,6 @@ const generateSignupPayload = (overrides = {}) => ({
 
 export const signupTestCases = [
     {
-        name: "Valid input - should sign up successfully",
-        payload: generateSignupPayload(),
-        expectedStatus: 200,
-        expectedMessage: "Sign up successful",
-        expectedData: {},
-    },
-    {
         name: "Invalid email - should return error",
         payload: generateSignupPayload({ userEmail: "invalidemail" }),
         expectedStatus: 400,

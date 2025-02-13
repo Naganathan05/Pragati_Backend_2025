@@ -29,7 +29,7 @@ const authController = {
         const { userEmail, userPassword } = req.body;
         if (!validateEmail(userEmail)) {
             const response = setResponseBadRequest(
-                "Email is not found or invalid",
+                "Email is not found in request or invalid",
             );
             return res
                 .status(response.responseCode)
