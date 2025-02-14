@@ -27,7 +27,7 @@ const clubRouter = Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Club'
+ *                 $ref: '#/routes/clubRoute'
  *       500:
  *         description: Server error
  */
@@ -47,7 +47,7 @@ clubRouter.get("/", clubController.getAllClubs);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Club'
+ *             $ref: '#/routes/clubRoute'
  *     responses:
  *       201:
  *         description: Club created successfully
@@ -81,7 +81,7 @@ clubRouter.post(
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Club'
+ *             $ref: '#/routes/clubRoute'
  *     responses:
  *       200:
  *         description: Club updated successfully
