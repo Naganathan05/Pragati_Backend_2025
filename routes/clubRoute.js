@@ -168,18 +168,16 @@ clubRouter.delete(
  *           type: string
  *           format: uri
  *           example: "https://example.com/tech-club.jpg"
+ *         clubhead:
+ *           type: string
+ *           format: string
+ *         clubAbbrevation:
+ *           type: string
+ *           format: string
  *         godname:
  *           type: string
+ *           format: string
  *           example: "Pegasus"
- *         godsubtitle:
- *           type: string
- *           example: "Godess of agriculture"
- *         goddescriptiontitle:
- *           type: string
- *           example: "Hermes's Call"
- *         goddescription:
- *           type: string
- *           example: "I am Hermes, god of communication and commerce, ruling Marketing with innovation and connection. Join me in the pursuit of influence and engagement, and together we shall secure victory at the Olympian Conclave.Why Join Us? By choosing our events, you align with a legacy of strategic communication. Each victory strengthens our pursuit of success, and your efforts will echo through Olympus. Our trials demand creative thinking, persuasive skills, and a knack for building networks.Stand With Hermes Compete in events bearing our emblems and become part of a legacy defined by marketing and influence. Together, we shall secure timeless victory!"
  *       required:
  *         - name
  *         - description
