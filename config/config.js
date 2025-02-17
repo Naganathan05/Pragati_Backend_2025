@@ -47,6 +47,25 @@ export const appConfig = {
         },
         name: "Pragati 2025",
     },
+    massMailer: {
+        obj: {
+            service: process.env.MAILER_SERVICE,
+            host: process.env.MAILER_HOST,
+            port: process.env.MAILER_PORT,
+            tls: {
+                ciphers: "SSLv3",
+                rejectUnauthorized: false,
+            },
+            auth: {
+                user: process.env.MAILER_USER,
+                pass: process.env.MAILER_PASS,
+            },
+            pool: true,
+            maxConnections: 5,
+            maxMessages: 100,
+        },
+        name: "Pragati 2025",
+    },
     payU_test: {
         key: process.env.PAYU_TEST_KEY,
         salt: process.env.PAYU_TEST_SALT,

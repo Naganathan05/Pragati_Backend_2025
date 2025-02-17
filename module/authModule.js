@@ -13,6 +13,7 @@ import { checkValidUser } from "../utilities/dbUtilities/userUtilities.js";
 import {
     sendForgotPasswordOtp,
     sendRegistrationOTP,
+    sendWelcomeMail,
 } from "../utilities/mailer/mailer.js";
 import { pragatiDb } from "../db/poolConnection.js";
 
@@ -81,6 +82,9 @@ const authModule = {
             academicYear,
             degree,
             isAmrita,
+            needAccommodationDay1,
+            needAccommodationDay2,
+            needAccommodationDay3,
         } = userData;
 
         const db = await pragatiDb.promise().getConnection();
@@ -102,9 +106,9 @@ const authModule = {
 
             const query = `
         INSERT INTO userData 
-          (userEmail, userPassword, userName, rollNumber, phoneNumber, collegeName, collegeCity, userDepartment, academicYear, degree, isAmrita)
+          (userEmail, userPassword, userName, rollNumber, phoneNumber, collegeName, collegeCity, userDepartment, academicYear, degree, isAmrita, needAccommodationDay1, needAccommodationDay2, needAccommodationDay3)
         VALUES 
-          (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
             const values = [
@@ -119,6 +123,9 @@ const authModule = {
                 academicYear,
                 degree,
                 isAmrita,
+                needAccommodationDay1,
+                needAccommodationDay2,
+                needAccommodationDay3,
             ];
 
             // Denotes that server entered the Transaction -> Needs rollback incase of error.
@@ -179,6 +186,10 @@ const authModule = {
                 return setResponseBadRequest(response.responseBody);
             }
 
+            if (response.responseCode === 200) {
+                return setResponseBadRequest("User Account Already Verified !");
+            }
+
             /*
       Started a transaction to ensure atomical writes to otpTable and userData Table.
       If any one of the write resulted in error, DB will be rolled back to the start of transaction
@@ -218,10 +229,17 @@ const authModule = {
 
             // Updated the accountStatus field to ['2' - Active] for the user.
             await db.query("LOCK TABLES userData WRITE;");
-            await db.query(
-                "UPDATE userData SET accountStatus = ? WHERE userID = ?",
-                ["2", userID],
+            const [updated] = await db.query(
+                "UPDATE userData SET accountStatus = ? WHERE userID = ? AND accountStatus = ?",
+                ["2", userID, "1"],
             );
+            if (updated.affectedRows == 1) {
+                const [userData] = await db.query(
+                    "SELECT userEmail, userName FROM userData WHERE userID = ?",
+                    [userID],
+                );
+                await sendWelcomeMail(userData[0].userName, userData[0].userEmail);
+            }
             return setResponseOk("Account Verified Succussfully");
         } catch (error) {
             // Transaction  Rolledback only if there is error and the server has entered the Transaction.
@@ -376,6 +394,60 @@ const authModule = {
 
             console.log("[ERROR]: Error in Reset Password Module", error);
             logError(err, "authModule:Reset Password", "db");
+            return setResponseInternalError();
+        } finally {
+            await db.query("UNLOCK TABLES");
+            db.release();
+        }
+    },
+    reVerifyUser: async function (userEmail) {
+        const db = await pragatiDb.promise().getConnection();
+        try {
+            var transactionStarted = 0;
+            const userData = await isUserExistsByEmail(userEmail, db);
+            if (userData == null) {
+                return setResponseBadRequest(
+                    "User email not found in database!",
+                );
+            }
+            const OTP = generateOTP();
+            const otpToken = createToken(
+                {
+                    userID: userData[0].userID,
+                },
+                "OTP",
+            );
+            const otpHashed = crypto
+                .createHash("sha256")
+                .update(OTP)
+                .digest("hex");
+            await sendRegistrationOTP(userData[0].userName, OTP, userEmail);
+
+            await db.beginTransaction();
+            await db.query("LOCK TABLES otpTable WRITE;");
+
+            transactionStarted = 1;
+
+            // Delete old OTP value for the user from otpTable.
+            await db.query("DELETE FROM otpTable WHERE userID = ?", [
+                userData[0].userID,
+            ]);
+            await db.query(
+                `INSERT INTO otpTable (userID, otp, expiryTime) 
+                VALUES (?, ?, CURRENT_TIMESTAMP + INTERVAL 5 MINUTE)`,
+                [userData[0].userID, otpHashed],
+            );
+
+            // Commit Transaction and return response.
+            await db.commit();
+            return setResponseOk("New verification mail sent successfully!", {
+                TOKEN: otpToken,
+            });
+        } catch (err) {
+            if (transactionStarted === 1) {
+                await db.rollback();
+            }
+            logError(err, "authModule:reVerifyUser", "db");
             return setResponseInternalError();
         } finally {
             await db.query("UNLOCK TABLES");

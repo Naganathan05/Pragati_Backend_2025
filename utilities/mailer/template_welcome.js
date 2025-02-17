@@ -1,16 +1,11 @@
-const TEMPLATE_EVENT_REGISTRATION_OTP = (
-    userName,
-    eventName,
-    transactionId,
-    totalMembers,
-) => {
-    return `<!DOCTYPE html>
+const TEMPLATE_WELCOME = (userName) => {
+    return `
+  <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pragati 2025 | Event Registration Confirmation</title>
+    <title>Pragati 2025 Invitation</title>
     <style>
         * {
             margin: 0;
@@ -54,15 +49,12 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (
             margin-bottom: 20px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
-        .hero-image {
-            width: 90px;
-            height: auto;
+        .logo-container {
+            text-align: center;
             margin-bottom: 20px;
         }
-        strong {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #8e6e53;
+        .logo {
+            width: 100px;
         }
         .details {
             font-size: 18px;
@@ -83,7 +75,12 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (
         }
         p {
             margin: 10px 0;
-            line-height: 1.5;
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
         @media (max-width: 600px) {
             .header {
@@ -95,32 +92,44 @@ const TEMPLATE_EVENT_REGISTRATION_OTP = (
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <div class="header">Pragati 2025</div>
-        <div class="sub-header">Event Registration Confirmation</div>
-
-        <img class="hero-image" src="https://b4ia3y8s78.ufs.sh/f/1rBJ3VmOgbeLRTo2PP4BcQ9dJivoLyXlq4CzWHZ8eSAR130p" alt="Pragati Logo" />
-
-        <p>Dear <strong>${userName}</strong>,</p>
-
-        <p>You have successfully registered for the event:</p>
-
-        <div class="details">
-            <p><strong>Event Name:</strong> ${eventName}</p>
-            <p><strong>Total Members:</strong> ${totalMembers}</p>
-            <p><strong>Transaction ID:</strong> ${transactionId}</p>
+        <div class="logo-container">
+            <img class="logo" src="https://b4ia3y8s78.ufs.sh/f/1rBJ3VmOgbeLRTo2PP4BcQ9dJivoLyXlq4CzWHZ8eSAR130p" alt="Pragati Logo">
         </div>
-
-        <p>We look forward to seeing you at the event!</p>
-
-        <p class="footer">Best regards, <br>Team Pragati 2025</p>
+        <div class="header">Pragati 2025 Invitation</div>
+        <div class="content">
+            <p>Dear ${userName},</p>
+            <p>We are thrilled to invite you to <strong>Pragati 2025</strong>, an elite platform where innovation, strategy, and skill converge. Get ready to challenge yourself, connect with brilliant minds, and experience an event that celebrates excellence.</p>
+            
+            <h3>Why Attend?</h3>
+            <ul>
+                <li>🔥 Compete in high-stakes challenges that test your skills and strategy.</li>
+                <li>🚀 Network with industry experts, mentors, and fellow participants.</li>
+                <li>🏆 Seize the opportunity to showcase your talent and win prestigious accolades.</li>
+            </ul>
+            <br />
+            <h3>Event Details</h3>
+            <p class="details">
+                📅 March 3rd & 4th, 2025<br>
+                📍 Amrita School of Business, Coimbatore
+            </p>
+            
+            <p>Stay updated with event announcements, exclusive content, and more by following us on our social media platforms.</p>
+            
+            <p>We look forward to welcoming you to <strong>Pragati'25</strong>—where the best rise to the challenge!</p>
+        </div>
+        <div class="footer">
+            <strong>Best Regards,</strong><br>
+            Team Pragati<br>
+            Amrita School of Business, Coimbatore<br>
+            <a href="https://pragati.amrita.edu/" target="_blank">https://pragati.amrita.edu/</a>
+        </div>
     </div>
 </body>
-
 </html>
-`;
+
+  `;
 };
 
-export default TEMPLATE_EVENT_REGISTRATION_OTP;
+export default TEMPLATE_WELCOME;

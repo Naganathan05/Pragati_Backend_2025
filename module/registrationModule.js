@@ -100,7 +100,7 @@ const registrationModule = {
                 paymentAmount =
                     eventData[0].eventFee +
                     Math.ceil(eventData[0].eventFee * 0.18);
-                productInfo = `ERI-${userID.toString()}-${eventID.toString()}-${totalMembers.toString()}-${paymentAmount.toString()}`;
+                productInfo = `ERI-${userID.toString()}-${eventID.toString()}-${totalMembers.toString()}-${paymentAmount.toString()}-${eventData[0].eventName.toString()}`;
 
                 // Checking if the txnID is present in the Table.
                 const checkDuplicateTransactionResponse =
@@ -172,7 +172,7 @@ const registrationModule = {
 
                 if (insertRegistrationRecord.affectedRows !== 1) {
                     console.log(
-                        "[ERROR]: Failed to Insert Record into registrationData",
+                        "[ERROR]: Failed to Insert Record into registrationData for Individual Registration",
                     );
                     const data = [
                         txnID,
@@ -191,6 +191,35 @@ const registrationModule = {
                     );
                     throw new Error(
                         "Failed to Insert Record into registrationData Table",
+                    );
+                }
+
+                const [insertGroupDetailRecord] = await db.query(
+                    "INSERT INTO groupDetail (registrationID, userID, eventID) VALUES (?, ?, ?)",
+                    [insertRegistrationRecord.insertId, userID, eventID],
+                );
+
+                if (insertGroupDetailRecord.affectedRows !== 1) {
+                    console.log(
+                        "[ERROR]: Failed to Insert Record into groupDetail for Individual Registration",
+                    );
+                    const data = [
+                        txnID,
+                        userID,
+                        eventID,
+                        paymentAmount,
+                        userName,
+                        userEmail,
+                        phoneNumber,
+                        productInfo,
+                    ];
+                    console.log(data);
+                    appendFileSync(
+                        "./logs/failedRegistrations.log",
+                        `${new Date().getTime}-"groupDetail Table Insertion Failed"-${data}`,
+                    );
+                    throw new Error(
+                        "Failed to Insert Record into groupDetail Table",
                     );
                 }
 

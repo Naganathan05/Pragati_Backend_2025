@@ -32,7 +32,7 @@ import { existsSync } from "fs";
 import { generateKey } from "./utilities/RSA/generateKey.js";
 
 // Imports for database initialization
-import initDatabase from "./db/schema/initDatabase.js";
+// import initDatabase from "./db/schema/initDatabase.js";
 
 // import function to create log directories.
 import { initLog } from "./utilities/logInit.js";
@@ -54,7 +54,7 @@ app.get("/api/test", (req, res) => {
 app.use("/api", router);
 
 // endpoint for accessing API docs
-app.use("/docs", serve, setup(swaggerJSDoc(swaggerOptions)));
+app.use("/api/docs", serve, setup(swaggerJSDoc(swaggerOptions)));
 
 if (cluster.isPrimary) {
     console.info(`[LOG]: Parent ${process.pid} is Running.`);
@@ -69,14 +69,14 @@ if (cluster.isPrimary) {
     initLog();
 
     // Initialize the database with the schema.
-    try {
-        await initDatabase(appConfig.db.pragati.database);
-        await initDatabase(appConfig.db.transactions.database);
-    } catch (err) {
-        console.error(`[ERROR]: Error in Initializing Database.`);
-        console.error(err);
-        process.exit(1);
-    }
+    // try {
+    //     await initDatabase(appConfig.db.pragati.database);
+    //     await initDatabase(appConfig.db.transactions.database);
+    // } catch (err) {
+    //     console.error(`[ERROR]: Error in Initializing Database.`);
+    //     console.error(err);
+    //     process.exit(1);
+    // }
 
     if (
         !existsSync("./middleware/encryptionKeys/privateKey.pem") ||

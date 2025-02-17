@@ -48,6 +48,20 @@ const setResponseTimedOut = (message, data = {}) => {
     return response;
 };
 
+const setResponseTransactionFailed = (message, data = {}) => {
+    response.responseCode = 202;
+    response.responseBody.MESSAGE = message;
+    response.responseBody.DATA = data;
+    return response;
+};
+
+const setResponseServiceFailure = (message, data = {}) => {
+    response.responseCode = 502;
+    response.responseBody.MESSAGE = message;
+    response.responseBody.DATA = data;
+    return response;
+};
+
 export {
     setResponseOk,
     setResponseNotFound,
@@ -55,4 +69,6 @@ export {
     setResponseUnauth,
     setResponseInternalError,
     setResponseTimedOut,
+    setResponseTransactionFailed,
+    setResponseServiceFailure,
 };

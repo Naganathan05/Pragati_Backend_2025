@@ -11,8 +11,10 @@ import { logError } from "../errorLogger.js";
 const checkValidUser = async function (userEmail, db, category, userID) {
     const response = {
         responseCode: 200,
-        responseBody: "User Data Fetched",
-        responseData: null,
+        responseBody: {
+            MESSAGE: "",
+            DATA: {},
+        },
     };
 
     try {
@@ -21,19 +23,20 @@ const checkValidUser = async function (userEmail, db, category, userID) {
             userData = await isUserExistsByEmail(userEmail, db);
         else if (category === "userID")
             userData = await isUserExistsByUserID(userID, db);
+
         if (userData == null) {
             response.responseCode = 401;
-            response.responseBody = "User Not Found";
+            response.responseBody.MESSAGE = "User Not Found";
             return response;
         }
 
         if (userData[0].accountStatus === "0") {
             response.responseCode = 401;
-            response.responseBody = "Account Blocked by Admin !";
+            response.responseBody.MESSAGE = "Account Blocked by Admin !";
             return response;
         } else if (userData[0].accountStatus === "1") {
             response.responseCode = 403;
-            response.responseBody = "Account Not Verified";
+            response.responseBody.MESSAGE = "Account Not Verified";
             return response;
         }
 

@@ -38,3 +38,6 @@ CREATE TABLE IF NOT EXISTS `transactionData` (
   `expiryTime` TIMESTAMP NOT NULL DEFAULT ( createdAt + INTERVAL 15 MINUTE ),
   `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
+
+INSERT INTO `transactionData` (`txnID`, `userID`, `eventID`, `amount`, `userEmail`, `userName`, `phoneNumber`, `transactionStatus`, `productInfo`)
+VALUES ('TXN001', '2', '1', '500', 'naganathan1555@gmail.com', 'Naganathan', '1234567895', '2', 'EGRI-2-1-1-500');

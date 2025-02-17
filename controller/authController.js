@@ -89,6 +89,9 @@ const authController = {
             academicYear,
             degree,
             isAmrita,
+            needAccommodationDay1,
+            needAccommodationDay2,
+            needAccommodationDay3,
         } = req.body;
         // Validate input data
         const validationErrors = validateSignupData(req.body);
@@ -112,6 +115,9 @@ const authController = {
                 academicYear,
                 degree,
                 isAmrita,
+                needAccommodationDay1,
+                needAccommodationDay2,
+                needAccommodationDay3,
             });
             return res
                 .status(response.responseCode)
@@ -221,6 +227,27 @@ const authController = {
                 .json(response.responseBody);
         } catch (error) {
             logError(error, "authController : Reset Password", "db");
+            const response = setResponseInternalError();
+            return res
+                .status(response.responseCode)
+                .json(response.responseBody);
+        }
+    },
+    reVerifyUser: async (req, res) => {
+        const { userEmail } = req.body;
+        if (!validateEmail(userEmail)) {
+            const response = setResponseBadRequest("Invalid email format");
+            return res
+                .status(response.responseCode)
+                .json(response.responseBody);
+        }
+        try {
+            const response = await authModule.reVerifyUser(userEmail);
+            return res
+                .status(response.responseCode)
+                .json(response.responseBody);
+        } catch (error) {
+            logError(error, "authController:reVerifyUser", "db");
             const response = setResponseInternalError();
             return res
                 .status(response.responseCode)

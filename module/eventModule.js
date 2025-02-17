@@ -19,10 +19,16 @@ const eventModule = {
         eventDescription,
         venue,
         time,
+        rules,
         isGroup,
         eventDate,
         maxRegistrations,
         isPerHeadFee,
+        firstPrice,
+        secondPrice,
+        thirdPrice,
+        fourthPrice,
+        fifthPrice,
         godName,
         organizerIDs,
         tagIDs,
@@ -64,9 +70,9 @@ const eventModule = {
             transactionStarted = 1;
 
             const query = `
-      INSERT INTO eventData (eventName, imageUrl, eventFee, eventDescription, venue, time, 
-       isGroup, eventDate, maxRegistrations, isPerHeadFee, godName, minTeamSize, maxTeamSize)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+      INSERT INTO eventData (eventName, imageUrl, eventFee, eventDescription, venue, time, rules,
+       isGroup, eventDate, maxRegistrations, isPerHeadFee, godName, minTeamSize, maxTeamSize, firstPrice, secondPrice, thirdPrice, fourthPrice, fifthPrice)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       `;
             const values = [
                 eventName,
@@ -75,6 +81,7 @@ const eventModule = {
                 eventDescription,
                 venue,
                 time,
+                rules,
                 isGroup,
                 eventDate,
                 maxRegistrations,
@@ -82,6 +89,11 @@ const eventModule = {
                 godName,
                 minTeamSize,
                 maxTeamSize,
+                firstPrice,
+                secondPrice,
+                thirdPrice,
+                fourthPrice,
+                fifthPrice,
             ];
             const [insertData] = await db.query(query, values);
             const eventID = insertData.insertId;
@@ -277,10 +289,16 @@ const eventModule = {
         eventDescription,
         venue,
         time,
+        rules,
         isGroup,
         eventDate,
         maxRegistrations,
         isPerHeadFee,
+        firstPrice,
+        secondPrice,
+        thirdPrice,
+        fourthPrice,
+        fifthPrice,
         godName,
         organizerIDs,
         tagIDs,
@@ -343,6 +361,7 @@ const eventModule = {
         eventDescription = ?, 
         venue = ?, 
         time = ?,
+        rules = ?,
         isGroup = ?, 
         eventDate = ?, 
         maxRegistrations = ?, 
@@ -350,6 +369,11 @@ const eventModule = {
         godName = ?, 
         minTeamSize = ?, 
         maxTeamSize = ?,
+        firstPrice = ?,
+        secondPrice = ?,
+        thirdPrice = ?,
+        fourthPrice = ?,
+        fifthPrice = ?,
         eventStatus = CASE 
           WHEN maxRegistrations <= numRegistrations THEN 2 
           ELSE 1 
@@ -363,6 +387,7 @@ const eventModule = {
                 eventDescription,
                 venue,
                 time,
+                rules,
                 isGroup,
                 eventDate,
                 maxRegistrations,
@@ -370,6 +395,11 @@ const eventModule = {
                 godName,
                 minTeamSize,
                 maxTeamSize,
+                firstPrice,
+                secondPrice,
+                thirdPrice,
+                fourthPrice,
+                fifthPrice,
                 eventID,
             ];
             const [updateResult] = await db.query(query, values); // explicit lock and unlock is not necessary in transactions

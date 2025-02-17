@@ -14,7 +14,7 @@ const validateTransactionID = async (txnID, db) => {
     const userID = transactionData[1];
     const eventID = transactionData[2];
 
-    const userData = checkValidUser(null, db, "userID", userID);
+    const userData = await checkValidUser(null, db, "userID", userID);
     if (userData.responseData.length === 0) {
         return "Transaction ID of Invalid User !!";
     }
