@@ -111,6 +111,30 @@ const validateSignupData = (data) => {
     ) {
         return "Invalid isAmrita Value";
     }
+    if (
+        data.needAccommodationDay1 === null ||
+        typeof data.needAccommodationDay1 != "boolean" ||
+        (data.needAccommodationDay1 != false &&
+            data.needAccommodationDay1 != true)
+    ) {
+        return "Invalid Accommodation Day 1 Value";
+    }
+    if (
+        data.needAccommodationDay2 === null ||
+        typeof data.needAccommodationDay2 != "boolean" ||
+        (data.needAccommodationDay2 != false &&
+            data.needAccommodationDay2 != true)
+    ) {
+        return "Invalid Accommodation Day 2 Value";
+    }
+    if (
+        data.needAccommodationDay3 === null ||
+        typeof data.needAccommodationDay3 != "boolean" ||
+        (data.needAccommodationDay3 != false &&
+            data.needAccommodationDay3 != true)
+    ) {
+        return "Invalid Accommodation Day 3 Value";
+    }
     return null;
 };
 

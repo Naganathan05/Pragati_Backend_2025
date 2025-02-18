@@ -168,6 +168,16 @@ clubRouter.delete(
  *           type: string
  *           format: uri
  *           example: "https://example.com/tech-club.jpg"
+ *         clubhead:
+ *           type: string
+ *           format: string
+ *         clubAbbrevation:
+ *           type: string
+ *           format: string
+ *         godname:
+ *           type: string
+ *           format: string
+ *           example: "Pegasus"
  *       required:
  *         - name
  *         - description

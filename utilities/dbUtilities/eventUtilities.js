@@ -48,6 +48,7 @@ const getEventQueryFormatter = function (
         ) AS tags,
         c.clubID,
         c.clubName,
+        c.godName,
         CASE 
            WHEN EXISTS (
                 SELECT 1 
@@ -79,6 +80,7 @@ const getEventQueryFormatter = function (
     e.eventDescription,
     e.venue,
     e.time,
+    e.rules,
     e.eventFee,
     e.isGroup,
     e.maxTeamSize,
@@ -88,6 +90,11 @@ const getEventQueryFormatter = function (
     e.maxRegistrations,
     e.isPerHeadFee,
     e.imageUrl AS eventImageUrl,
+    e.firstPrice,
+    e.secondPrice,
+    e.thirdPrice,
+    e.fourthPrice,
+    e.fifthPrice,
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(

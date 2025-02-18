@@ -35,6 +35,8 @@ const eventRouter = Router();
  *                 type: string
  *               time:
  *                 type: string
+ *               rules:
+ *                 type: string
  *               isGroup:
  *                 type: boolean
  *               maxTeamSize:
@@ -47,6 +49,16 @@ const eventRouter = Router();
  *                 type: number
  *               isPerHeadFee:
  *                 type: boolean
+ *               firstPrice:
+ *                 type: string
+ *               secondPrice:
+ *                 type: string
+ *               thirdPrice:
+ *                 type: string
+ *               fourthPrice:
+ *                 type: string
+ *               fifthPrice:
+ *                 type: string
  *               godName:
  *                 type: string
  *               organizerIDs:
@@ -227,6 +239,9 @@ eventRouter.get(
  *               time:
  *                 type: string
  *                 description: Time of event/time of event rounds
+ *               rules:
+ *                 type: string
+ *                 description: Rules for the event. (can be null too.)
  *               isGroup:
  *                 type: boolean
  *                 description: Indicates if the event is group-based
@@ -246,6 +261,21 @@ eventRouter.get(
  *               isPerHeadFee:
  *                 type: boolean
  *                 description: Indicates if the fee is per participant
+ *               firstPrice:
+ *                 type: string
+ *                 descriptiong: First Price for the event
+ *               secondPrice:
+ *                 type: string
+ *                 descriptiong: Second Price for the event
+ *               thirdPrice:
+ *                 type: string
+ *                 descriptiong: Third Price for the event
+ *               fourthPrice:
+ *                 type: string
+ *                 descriptiong: Fourth Price for the event
+ *               fifthPrice:
+ *                 type: string
+ *                 descriptiong: Fifth Price for the event
  *               godName:
  *                 type: string
  *                 description: Name of the god associated with the event

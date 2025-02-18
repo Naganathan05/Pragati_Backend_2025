@@ -10,10 +10,14 @@ const transactionController = {
     verifyTransactionController: async (req, res) => {
         const { txnID } = req.body;
 
+        // console.log("[INFO]: Verify Transaction Controller Called with txnID: ", txnID);
+
         const db = await pragatiDb.promise().getConnection();
         const invalidTxnID = await validateTransactionID(txnID, db);
         if (invalidTxnID) {
-            return setResponseBadRequest(invalidTxnID);
+            return res
+                .status(setResponseBadRequest(invalidTxnID).responseCode)
+                .json(setResponseBadRequest(invalidTxnID).responseBody);
         }
 
         try {
@@ -22,6 +26,7 @@ const transactionController = {
                 pragatiDb,
                 transactionsDb,
             );
+
             return res
                 .status(moduleResponse.responseCode)
                 .json(moduleResponse.responseBody);

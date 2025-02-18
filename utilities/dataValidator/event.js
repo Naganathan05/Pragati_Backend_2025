@@ -27,6 +27,36 @@ const validateAddEventData = (eventData) => {
     if (!validateBasicString(eventData.time, 5000)) {
         return "Invalid time of event (should be sent as string)";
     }
+    if (typeof eventData.rules != "string") {
+        if (eventData.rules != null) {
+            return "Invalid rules for event (should be string)";
+        }
+    }
+    if (!validateBasicString(eventData.firstPrice, 255)) {
+        if (eventData.firstPrice != null) {
+            return "Invalid first price entry for event (should be sent as string)";
+        }
+    }
+    if (!validateBasicString(eventData.secondPrice, 255)) {
+        if (eventData.secondPrice != null) {
+            return "Invalid second price entry for event (should be sent as string)";
+        }
+    }
+    if (!validateBasicString(eventData.thirdPrice, 255)) {
+        if (eventData.thirdPrice != null) {
+            return "Invalid third price entry for event (should be sent as string)";
+        }
+    }
+    if (!validateBasicString(eventData.fourthPrice, 255)) {
+        if (eventData.fourthPrice != null) {
+            return "Invalid fourth price entry for event (should be sent as string)";
+        }
+    }
+    if (!validateBasicString(eventData.fifthPrice, 255)) {
+        if (eventData.fifthPrice != null) {
+            return "Invalid fifth price entry for event (should be sent as string)";
+        }
+    }
     if (
         eventData.isGroup === null ||
         typeof eventData.isGroup != "boolean" ||

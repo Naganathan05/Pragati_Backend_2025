@@ -1,5 +1,5 @@
 import validator from "validator";
-import { validateBasicString } from "./common.js";
+import { isValidID, validateBasicString } from "./common.js";
 
 const validateAddNotificationData = (data) => {
     if (!validateBasicString(data.title, 500)) {
@@ -14,13 +14,36 @@ const validateAddNotificationData = (data) => {
     if (!validateBasicString(data.venue, 500)) {
         return "Invalid venue";
     }
-    if (!validator.isDate(data.startDate) || data.startDate === null) {
-        return "Invalid start date.";
+
+    if (!data.startDate) return "Invalid start date.";
+
+    let date = new Date(data.startDate);
+    const startDateValidity =
+        !isNaN(date.getTime()) &&
+        data.startDate === date.toISOString().split("T")[0];
+
+    if (!startDateValidity) return "Invalid Start Date";
+
+    if (!data.endDate) return "Invalid End date.";
+
+    date = new Date(data.endDate);
+    const endDateValidity =
+        !isNaN(date.getTime()) &&
+        data.endDate === date.toISOString().split("T")[0];
+
+    if (!endDateValidity) return "Invalid End Date";
+    return null;
+};
+
+const validateUpdateNotificationData = (data) => {
+    if (!isValidID(data.notificationID)) {
+        return "Invalid notification ID";
     }
-    if (!validator.isDate(data.endDate) || data.endDate === null) {
-        return "Invalid end date.";
+    const errors = validateAddNotificationData(data);
+    if (errors != null) {
+        return errors;
     }
     return null;
 };
 
-export { validateAddNotificationData };
+export { validateAddNotificationData, validateUpdateNotificationData };

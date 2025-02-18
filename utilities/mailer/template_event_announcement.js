@@ -1,12 +1,14 @@
-const TEMPLATE_OTP = (otp, userName) => {
-    return `<!DOCTYPE html>
+const TEMPLATE_EVENT_ANNOUNCEMENT = (eventName, announcement) => {
+    return `
+    <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pragati 2025</title>
+    <title>Pragati 2025 | Event Announcement</title>
     <style>
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -58,16 +60,15 @@ const TEMPLATE_OTP = (otp, userName) => {
             font-weight: bold;
             color: #8e6e53;
         }
-        .otp {
-            font-size: 32px;
-            font-weight: bold;
+        .details {
+            font-size: 18px;
             color: #5d4037;
             background: linear-gradient(to right, #f2d7b3, #d1af8a);
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 10px;
             display: inline-block;
-            margin: 20px 0;
-            letter-spacing: 4px;
+            margin: 10px 0;
+            letter-spacing: 1px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         .footer {
@@ -84,36 +85,29 @@ const TEMPLATE_OTP = (otp, userName) => {
             .header {
                 font-size: 28px;
             }
-            .otp {
-                font-size: 24px;
-                letter-spacing: 3px;
+            .details {
+                font-size: 16px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <div class="header">Pragati 2025</div>
-        <div class="sub-header">Voyage Through the Neo-Renaissance</div>
-
-        <img class="hero-image" src="https://b4ia3y8s78.ufs.sh/f/1rBJ3VmOgbeLRTo2PP4BcQ9dJivoLyXlq4CzWHZ8eSAR130p" alt="Pragati Logo" />
-
-        <p>Hello <strong>${userName}</strong>,</p>
-
-        <p>Welcome to Pragati 2025! We’re excited to have you on board.</p>
-
-
-        <p>Please use the following code to verify your account:</p>
-
-        <div class="otp">${otp}</div>
-
-        <p>If you didn’t request this, you can safely ignore this email.</p>
-
-        <p class="footer">Best regards, <br>Team Pragati 2025</p>
+        <div class="logo-container">
+            <img class="logo" src="https://b4ia3y8s78.ufs.sh/f/1rBJ3VmOgbeLRTo2PP4BcQ9dJivoLyXlq4CzWHZ8eSAR130p" alt="Pragati Logo">
+        </div>
+        <div class="header">${eventName} - Announcement</div>
+        <div class="content">
+            <p>${announcement}</p>
+        </div>
+        <div class="footer">
+            &copy; 2025 Event Team. All Rights Reserved.
+        </div>
     </div>
 </body>
-</html>
-`;
+
+</html>`;
 };
 
-export default TEMPLATE_OTP;
+export default TEMPLATE_EVENT_ANNOUNCEMENT;
